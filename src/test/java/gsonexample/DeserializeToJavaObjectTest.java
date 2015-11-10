@@ -1,58 +1,58 @@
 package gsonexample;
 
-import com.google.gson.Gson;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
-import java.util.Objects;
-import java.util.logging.Logger;
+import java.util.*;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.*;
+
+import com.google.gson.*;
 
 public class DeserializeToJavaObjectTest {
-
-    public static final Logger LOGGER = Logger.getLogger(DeserializeToJavaObjectTest.class.getSimpleName());
+    
     final String jsonString = "{id:1,name: \"john\"}";
-
-    public static class Person{
+    
+    public static class Person {
         int id;
         String name;
-
+        
         boolean calledMyConstructor = false;
-
-        public Person(int id, String name) {
+        
+        public Person(final int id, final String name) {
             this.id = id;
             this.name = name;
-
+            
             calledMyConstructor = true;
-            LOGGER.info("Person.constructor was called.");
+            System.out.println("Person.constructor was called."
+                    + String.format(" [id:%s name:%s]", id, name));
         }
     }
-
+    
     @Test
     public void test_constructor() {
-        Person cathy = new Person(1, "Cathy");
+        final Person cathy = new Person(1, "Cathy");
         assertThat(cathy.calledMyConstructor, is(true));
     }
-
+    
     @Test
     public void test_gsonDeserialize() {
-        Gson gson = new Gson();
-        Person deserializedJohn = gson.fromJson(jsonString, Person.class);
+        final Gson gson = new Gson();
+        final Person deserializedJohn = gson.fromJson(jsonString, Person.class);
         assertThat(deserializedJohn.calledMyConstructor, is(false));
     }
-
+    
     @Test
     public void test_allocateInstanceWithOutConstructor() {
         try {
-            Person person = DeserializeToJavaObject.allocateInstanceWithOutConstructor(Person.class);
+            final Person person = DeserializeToJavaObject.allocateInstanceWithOutConstructor(Person.class);
             Objects.requireNonNull(person);
             assertThat(person.calledMyConstructor, is(false));
-
-        } catch (Exception e) {
+            
+        }
+        catch (final Exception e) {
             e.printStackTrace();
         }
     }
-
+    
 }
