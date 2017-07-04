@@ -12,3 +12,6 @@ byte code 書き換えとか
 
 そんなチャチなもんじゃあ　断じてねえ  
 もっと恐ろしいものの片鱗を　味わったぜ...  
+
+unsafeつかっているところ
+https://github.com/tomlla/gsonexmaple/blob/master/src/main/java/gsonexample/DeserializeToJavaObject.java#L13
